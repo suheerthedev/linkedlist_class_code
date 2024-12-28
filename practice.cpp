@@ -1,8 +1,6 @@
 #include <iostream>
 using namespace std;
 
- 
-
 struct Node{
     int data;
     int index;
@@ -66,11 +64,7 @@ struct LinkedList{
             //when user wants to add in the start of list
             insertBegin(value);
         }
-        else if(index == lenght-1){
-            //when user wants to add in the last of list
-            insertEnd(value);
-        }
-        else if(index > 0 && index < length-1){
+        else if(index > 0 && index < length){
             //beech mein kahein pe
             Node* temp = start;
 
@@ -89,6 +83,163 @@ struct LinkedList{
         else{
             cout<<"No Index Found"<<endl;
         }
+    }
+
+    //deleteBegin
+    void deleteBegin(){
+        if(isEmpty()){
+            cout<<"Unable to delete, no nodes found"<<endl;
+        }
+        else{
+            Node* toDelete = start;
+            start = start->next;
+            delete toDelete;
+            length--;
+            updateIndices();
+
+        }
+    }
+
+    //deleteEnd
+    void deleteEnd(){
+        if(isEmpty()){
+            cout<<"Unable to delete, no nodes found"<<endl;
+        }
+        else{
+            Node* temp = start;
+
+            for(int i = 0; i < length-2; i++){
+                temp = temp->next;
+            }
+
+            Node* toDelete = last;
+            last = temp;
+            last->next = nullptr;
+            delete toDelete;
+            length--;
+        }
+    }
+
+    //deleteAt(index)
+    void deleteAt(int index){
+        if(isEmpty()){
+            cout<<"List is Empty, Cannot delete"<<endl;
+        }
+        else{
+            if (index == 0)
+            {
+                //jab head delete karna hoga
+                deleteBegin();
+            }
+            else if(index == length-1){
+                //jab tail ko delete karna hoga
+                deleteEnd();
+            }
+            else if(index > 0 && index < length-1){
+                //head or tail ke beech mein jo nodes hongi unko handle kareingay
+                Node* prev  = start;
+                Node* temp = start;
+
+                for(int i = 0; i < index; i++){
+                    prev = temp;
+                    temp = temp->next;
+                }
+
+                prev->next = temp->next;
+                delete temp;
+                length--;
+                updateIndices();
+            }
+            else{
+                cout<<"Invalid index"<<endl;
+            }
+            
+        }
+    }
+
+    //deleteWhereDataIs(value)
+    void deleteWhereDataIs(int value){
+        if(isEmpty()){
+            cout<<"List is empty, cannot delete"<<endl;
+        }
+        else{
+            if(checkForValue(value)){
+                //ye jab run hoga, jab na tou list empty hogi or value bhi available hogi
+                if(start->data == value){
+                    //jab value humein head pe hi miljayegi
+                    deleteBegin();
+                }
+                else if(last->data == value){
+                    //jab value humein tail pe miljayegi
+                    deleteEnd();
+                }
+                else{
+                    //jab value beech mein kahein hogi
+                    Node* prev = start;
+                    Node* temp = start;
+
+                    for(int i = 0; i < length; i++){
+                        if(temp->data == value){
+                            break;
+                        }
+                        prev = temp;
+                        temp = temp->next;
+                    }
+
+                    prev->next = temp->next;
+                    delete temp;
+                    length--;
+                    updateIndices();
+                }
+            }
+            else{
+                cout<<"Sorry, value is not present in the list."<<endl;
+            }
+        }
+    }
+
+    //search based on index
+    void getWhereIndexIs(int index){
+        if(isEmpty()){
+            cout<<"The list is empty,cannot search."<<endl;
+        }
+        else{
+            if(index >= 0 && index < length){
+                Node* temp = start;
+                for(int i = 0; i < index; i++){
+                    temp= temp->next;
+                }
+                cout<<"The Data at given index is: "<<temp->data<<endl;
+            }
+            else{
+                cout<<"No data found on this index."<<endl;
+            }
+        }
+    }
+
+    //search based on value
+    void getWhereValueIs(int value){
+        if(isEmpty()){
+            cout<<"List empty,kiya dhund ke laon bhai."<<endl;
+        }
+        else{
+
+            if(checkForValue(value)){
+                Node* temp = start;
+                for(int i = 0; i < length; i++){
+                    if(temp->data == value){
+                        break;
+                    }
+                    temp = temp->next;
+                }
+                cout<<"The data is on the index: "<<temp->index<<endl;
+            }
+            else{
+                cout<<"The value is not present in the list."<<endl;
+            }
+        }
+        
+
     }
 
     
@@ -118,6 +269,20 @@ struct LinkedList{
             temp->index = i;
             temp = temp->next;
         }
+    }
+
+    bool checkForValue(int value){
+        Node* temp = start;
+        bool isPresent = false;
+
+        for(int i = 0 ; i < length ; i++){
+            if(temp->data == value){
+                isPresent = true;
+            }
+            temp = temp->next;
+        }
+
+        return isPresent;
     }
 };
 
