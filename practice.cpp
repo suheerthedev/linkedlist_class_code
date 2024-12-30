@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+
 struct Node{
     int data;
     int index;
@@ -14,22 +15,56 @@ struct LinkedList{
 
     //insertBegin(value)
     void insertBegin(int value){
+        //ye if check karega ke list empty hai ke nahi, humare helper function "isEmpty ki madad"
         if(isEmpty()){
+            //ye line memory me ik empty node banadega "n" ke naam se
             Node* n = new Node;
+
+            //ab is node mein woh value pass hogi jo user ne function call karwate howe di
             n->data = value;
+
+            //iski index humne zero rakhi hai kion kay hum head pe insert kar rahay hain or head/pehli node ki index zero hoti hai
             n->index = 0;
+
+            //iska pointer null hoga kion  kay ye wahid node hogi list mein, because hum check kar chuke hain ke list empty hai ke nahi
             n->next = nullptr;
+
+            //start or last ko is node pe lakar betha deingay, because ye wahid node hai abhi humari list mein
             start = n; 
             last = n;
+
+            //iska tou pata he hoga
             length++;
         }
+        /*or agar list empty nahi howi tou ye chale ga, 
+        ab ismein hum ye assume karte howe handling kareingay ke 
+        atleast ik node tou list mein majood hai*/
         else{
+            //ye line memory me ik empty node banadega "n" ke naam se
             Node* n = new Node;
+
+            //ab is node mein woh value pass hogi jo user ne function call karwate howe di
             n->data = value;
+
+            //iski index humne zero rakhi hai kion kay hum head pe insert kar rahay hain or head/pehli node ki index zero hoti hai
             n->index = 0;
+
+            /*is node ko humne start pe point karwa kion kay start abhi pehli node pe
+            betha hai or is "pehli wali" node se pehlay hum ik new node rakhna chaa rahe hain,
+            isliyue hum new node ka pointer jo ke "n->next" hai usko start pe point
+            karwadeingay
+            */ 
             n->next = start;
+
+            /* ab start kion kay humesha pehli wali node pe hona chahiye hai, lekin
+            ab list mein ik new node agayi hai jo ke start se pehli wali node hai
+            isliye hum start ko jump karwa kar us node pe rakhdeingay */
             start = n;
+
+            //ye tou pata he hoga
             length++;
+
+            //sab nodes ki indices update kardein, helper method use karte howe
             updateIndices();
         }
     }
